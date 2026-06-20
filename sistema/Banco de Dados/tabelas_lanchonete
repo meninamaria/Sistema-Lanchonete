@@ -27,6 +27,7 @@ create table funcionario(
     salario DOUBLE,
     cpf VARCHAR(20),
     nome VARCHAR(50),
+    tipo VARCHAR(50),
     PRIMARY key (idFunc)
 );
 
