@@ -24,7 +24,7 @@ import {
 } from "lucide-react";
 
 
-// ─── Types ───────────────────────────────────────────────────────────────────
+
 
 type TableStatus = "livre" | "ocupada" | "reservada";
 type PaymentMethod = "dinheiro" | "credito" | "debito" | "pix";
@@ -67,8 +67,6 @@ interface Table {
   currentOrderId?: string;
   customerCount?: number;
 }
-
-// ─── Initial Data ─────────────────────────────────────────────────────────────
 
 const INITIAL_MENU: MenuItem[] = [
   { id: "m1", category: "Lanches", name: "X-Burguer", price: 18.9, available: true },
@@ -132,7 +130,6 @@ const DEMO_ORDERS: Order[] = [
   },
 ];
 
-// ─── Helpers ──────────────────────────────────────────────────────────────────
 
 const fmt = (v: number) =>
   v.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
@@ -154,8 +151,6 @@ const STATUS_COLORS: Record<TableStatus, string> = {
   ocupada: "bg-amber-100 text-amber-800 border-amber-300",
   reservada: "bg-blue-100 text-blue-800 border-blue-300",
 };
-
-// ─── Sub-components ───────────────────────────────────────────────────────────
 
 function StatCard({
   icon: Icon,
@@ -198,7 +193,6 @@ function Badge({ status }: { status: TableStatus }) {
   );
 }
 
-// ─── Main App ─────────────────────────────────────────────────────────────────
 
 export default function App() {
   const [section, setSection] = useState<string>("dashboard");
@@ -206,31 +200,25 @@ export default function App() {
   const [menuItems, setMenuItems] = useState<MenuItem[]>(INITIAL_MENU);
   const [orders, setOrders] = useState<Order[]>(DEMO_ORDERS);
 
-  // Table flow state
   const [selectedTableId, setSelectedTableId] = useState<string | null>(null);
   const [comandaTableId, setComandaTableId] = useState<string | null>(null);
 
-  // Payment state
   const [paymentTableId, setPaymentTableId] = useState<string | null>(null);
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("dinheiro");
   const [amountPaid, setAmountPaid] = useState<string>("");
 
-  // Menu management state
   const [editingItem, setEditingItem] = useState<MenuItem | null>(null);
   const [newItem, setNewItem] = useState<Partial<MenuItem>>({});
   const [addingItem, setAddingItem] = useState(false);
 
-  // Open table modal
   const [openTableModal, setOpenTableModal] = useState<Table | null>(null);
   const [customerCount, setCustomerCount] = useState(1);
 
-  // Comanda item add
   const [searchMenu, setSearchMenu] = useState("");
   const [activeCategory, setActiveCategory] = useState("Todos");
   const [pendingItems, setPendingItems] = useState<OrderItem[]>([]);
   const [itemNotes, setItemNotes] = useState<Record<string, string>>({});
 
-  // ── Derived ──
   const todayOrders = orders.filter(
     (o) => o.status === "paga" && o.closedAt && o.closedAt > new Date(Date.now() - 86400000)
   );
@@ -249,7 +237,6 @@ export default function App() {
     });
   }, [menuItems, activeCategory, searchMenu]);
 
-  // ── Table helpers ──
   const getTableOrder = (tableId: string) =>
     orders.find((o) => o.tableId === tableId && o.status === "aberta");
 
@@ -284,7 +271,6 @@ export default function App() {
     );
   };
 
-  // ── Comanda helpers ──
   const addPendingItem = (item: MenuItem) => {
     setPendingItems((prev) => {
       const ex = prev.find((p) => p.menuItemId === item.id);
@@ -339,7 +325,6 @@ export default function App() {
     );
   };
 
-  // ── Payment helpers ──
   const processPayment = (orderId: string, tableId: string) => {
     const paid = parseFloat(amountPaid.replace(",", ".")) || 0;
     setOrders((prev) =>
@@ -356,7 +341,6 @@ export default function App() {
     setSection("mesas");
   };
 
-  // ── Menu management ──
   const saveMenuItem = () => {
     if (!editingItem) return;
     setMenuItems((prev) => prev.map((m) => (m.id === editingItem.id ? editingItem : m)));
@@ -380,10 +364,6 @@ export default function App() {
   const deleteMenuItem = (id: string) => {
     setMenuItems((prev) => prev.filter((m) => m.id !== id));
   };
-
-  // ─────────────────────────────────────────────────────────────────────────────
-  // RENDER
-  // ─────────────────────────────────────────────────────────────────────────────
 
   const navItems = [
     { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -446,7 +426,7 @@ export default function App() {
         </div>
       </aside>
 
-      {/* ── Main Content ── */}
+      {/* ── Main  ── */}
       <main className="flex-1 flex flex-col overflow-hidden">
 
         {/* Header */}
@@ -465,7 +445,7 @@ export default function App() {
           </div>
         </header>
 
-        {/* Page content */}
+        {/* Page */}
         <div className="flex-1 overflow-y-auto p-6">
 
           {/* ══════════ DASHBOARD ══════════ */}
@@ -478,7 +458,7 @@ export default function App() {
                 <StatCard icon={TrendingUp} label="Ticket Médio" value={todayOrders.length ? fmt(todayRevenue / todayOrders.length) : "—"} sub="por comanda" color="green" />
               </div>
 
-              {/* Open orders table */}
+              {/* Mesa com pedidos abertos */}
               <div className="bg-card rounded-xl border border-border shadow-sm">
                 <div className="px-6 py-4 border-b border-border flex items-center justify-between">
                   <h3 className="font-semibold text-foreground" style={{ fontFamily: "'Outfit', sans-serif" }}>
@@ -523,7 +503,7 @@ export default function App() {
                 )}
               </div>
 
-              {/* Recent history */}
+              {/* Histórico */}
               <div className="bg-card rounded-xl border border-border shadow-sm">
                 <div className="px-6 py-4 border-b border-border">
                   <h3 className="font-semibold text-foreground" style={{ fontFamily: "'Outfit', sans-serif" }}>
@@ -637,7 +617,7 @@ export default function App() {
             return (
               <div className="flex gap-4 h-full max-h-[calc(100vh-13rem)]">
 
-                {/* Menu selector */}
+                {/* Menu de Seleção */}
                 <div className="flex-1 flex flex-col bg-card rounded-xl border border-border shadow-sm overflow-hidden">
                   <div className="px-4 py-3 border-b border-border">
                     <p className="text-xs text-muted-foreground mb-2 font-semibold uppercase tracking-wider">Mesa {activeTable.number} · {activeTable.customerCount} pessoa(s)</p>
@@ -849,7 +829,7 @@ export default function App() {
                   </div>
 
                   <div className="p-6 space-y-5">
-                    {/* Items summary */}
+                    {/* Sumário de Itens */}
                     <div className="space-y-1.5 max-h-40 overflow-y-auto pr-1">
                       {payOrder.items.map((item) => (
                         <div key={item.menuItemId} className="flex justify-between text-sm">
@@ -860,7 +840,7 @@ export default function App() {
                     </div>
 
                     <div className="border-t border-border pt-4 space-y-4">
-                      {/* Payment method */}
+                      {/* Método de Pagamento */}
                       <div>
                         <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">Forma de Pagamento</p>
                         <div className="grid grid-cols-2 gap-2">
@@ -883,7 +863,7 @@ export default function App() {
                         </div>
                       </div>
 
-                      {/* Amount paid (dinheiro only) */}
+                      {/* Apenas dinheiro */}
                       {paymentMethod === "dinheiro" && (
                         <div>
                           <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">Valor Recebido</p>
@@ -1131,7 +1111,7 @@ export default function App() {
         </div>
       </main>
 
-      {/* ══════════ MODAL: Abrir Mesa ══════════ */}
+      {/* ══════════ Abrir Mesa ══════════ */}
       {openTableModal && (
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4">
           <div className="bg-card rounded-2xl border border-border shadow-2xl w-full max-w-sm p-6">
