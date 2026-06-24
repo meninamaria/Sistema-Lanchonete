@@ -122,7 +122,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
      <string>Menu</string>
     </property>
     <property name="alignment">
-     <set>AlignCenter</set>
+     <set>Qt::AlignmentFlag::AlignCenter</set>
     </property>
    </widget>
   </widget>

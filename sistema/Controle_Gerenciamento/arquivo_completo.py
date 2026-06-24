@@ -141,35 +141,59 @@ def atualizarTabelaFunc():
 
 
 # Pedidos -------------------------------------------------------------------------------------------------------
+# EU VOU FAZER ISSO
 
 
 
+# Mesas -------------------------------------------------------------------------------------------------------
+# EU VOU FAZER ISSO
+
+
+
+# COMIDAS  -------------------------------------------------------------------------------------------------------
+# lica tu vau fazer essa parte aquirrr!!!!
+
+
+
+
+
+# faz com que o sistema funcione
 app = QtWidgets.QApplication([])
 
+# TODAS as telas que forem criadas tem que fazer isso ai
+# Tela principal
 ui_path1 = Path(__file__).with_name("telaPrincipal.ui")
 telaPrincipal = uic.loadUi(str(ui_path1))
 
+# botões da tela principal
+telaPrincipal.bt_gerFunc.clicked.connect(gerenciarFunc)
+telaPrincipal.bt_gerFunc.clicked.connect(listarFuncionarios) # esse aqui é pra quando o usuário clicar no botão Gerenciar Funcionário, a tabela carregar
+
+# Tela funcionário
 ui_path2 = Path(__file__).with_name("telaFuncionarios.ui")
 telaFunc = uic.loadUi(str(ui_path2))
 
-ui_path3 = Path(__file__).with_name("telaFuncionarios_cadastro.ui")
-telaFunc_cadastro = uic.loadUi(str(ui_path3))
-
-ui_path4 = Path(__file__).with_name("telaFuncionarios_atualizar.ui")
-telaFunc_atualizar = uic.loadUi(str(ui_path4))
-
-telaPrincipal.bt_gerFunc.clicked.connect(gerenciarFunc)
-telaPrincipal.bt_gerFunc.clicked.connect(listarFuncionarios)
-
+# botoões da tela funcionário
 telaFunc.bt_cadastrarFunc.clicked.connect(cadastrarFunc)
 telaFunc.bt_buscarFunc.clicked.connect(buscarFunc)
 telaFunc.bt_atualizarFunc.clicked.connect(atualizarFunc)
 telaFunc.bt_excluirFunc.clicked.connect(removerFuncionario)
 
-telaFunc_atualizar.bt_confirmarAtualizarFun.clicked.connect(salvarFuncionario)
+# Tela funcionário_cadastro
+ui_path3 = Path(__file__).with_name("telaFuncionarios_cadastro.ui")
+telaFunc_cadastro = uic.loadUi(str(ui_path3))
 
+# botão da tela funcionário_cadastro
 telaFunc_cadastro.bt_confirmarCadastroFun.clicked.connect(confirmarCadastro_func)
 
+# Tela funcionário_atualizar
+ui_path4 = Path(__file__).with_name("telaFuncionarios_atualizar.ui")
+telaFunc_atualizar = uic.loadUi(str(ui_path4))
+
+# botão da tela funcionário_atualizar
+telaFunc_atualizar.bt_confirmarAtualizarFun.clicked.connect(salvarFuncionario)
+
+# aqui é pra mostrar a TELA PRINCIPAL DO SISTEMA e executar o SISTEMA
 telaPrincipal.show()
 app.exec()
 
