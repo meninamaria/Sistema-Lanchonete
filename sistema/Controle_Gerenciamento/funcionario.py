@@ -6,34 +6,25 @@ from PyQt5 import uic, QtWidgets
 # conectar com o banco de dados
 cursor = banco.cursor()
 
-
-ui_path1 = Path(__file__).with_name("telaFuncionários.ui")
-telaFunc = uic.loadUi(str(ui_path1))
-ui_path2 = Path(__file__).with_name("telaFuncionários_cadastro.ui")
-telaFunc_cadastro = uic.loadUi(str(ui_path2))
-
-
 def gerenciar_funcionario():
-    telaFunc.bt_cadastrarFunc.clicked.connect(cadastrarFunc)
-    telaFunc.bt_buscarFunc.clicked.connect(buscarFunc)
-
+    print("é fogo bbres")
 
 
 def cadastrarFunc():
-        telaFunc.close()
-        telaFunc_cadastro.show()
+    telaFunc.close()
+    telaFunc_cadastro.show()
 
-        nome = telaFunc_cadastro.txt_nomeCadastroFunc.text()
-        cpf = telaFunc_cadastro.txt_cpfcadastroFunc.text()
-        salario = telaFunc_cadastro.txt_salarioCadastroFunc.text()
-        funcao = telaFunc_cadastro.txt_funcaocadastroFunc.text()
+    nome = telaFunc_cadastro.txt_nomeCadastroFunc.text()
+    cpf = telaFunc_cadastro.txt_cpfcadastroFunc.text()
+    salario = telaFunc_cadastro.txt_salarioCadastroFunc.text()
+    funcao = telaFunc_cadastro.txt_funcaocadastroFunc.text()
 
-        # falta colocar o botao bt_confirmarCadastro pra adicionar no BD
+    # falta colocar o botao bt_confirmarCadastro pra adicionar no BD
 
-        comando_SQL = "INSERT INTO funcionario (salario, cpf, nome, funcao) VALUES (%s, %s, %s, %s)"
-        dados = (float(salario), str(cpf), str(nome), str(funcao))
-        cursor.execute(comando_SQL, dados)
-        banco.commit()
+    comando_SQL = "INSERT INTO funcionario (salario, cpf, nome, funcao) VALUES (%s, %s, %s, %s)"
+    dados = (float(salario), str(cpf), str(nome), str(funcao))
+    cursor.execute(comando_SQL, dados)
+    banco.commit()
 
 
 def buscarFunc():
@@ -90,3 +81,12 @@ def buscarFunc():
     # elif opcao == 5:
     #     os.system('cls' if os.name == 'nt' else 'clear')
     #     return "voltar"
+
+ui_path1 = Path(__file__).with_name("telaFuncionários.ui")
+telaFunc = uic.loadUi(str(ui_path1))
+
+ui_path2 = Path(__file__).with_name("telaFuncionários_cadastro.ui")
+telaFunc_cadastro = uic.loadUi(str(ui_path2))
+
+telaFunc.bt_cadastrarFunc.clicked.connect(cadastrarFunc)
+telaFunc.bt_buscarFunc.clicked.connect(buscarFunc)

@@ -17,7 +17,7 @@
    <string notr="true">background-color: rgb(255, 255, 255);</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QLineEdit" name="lineEdit">
+   <widget class="QLineEdit" name="txt_nomeCadastroFunc">
     <property name="geometry">
      <rect>
       <x>110</x>
@@ -27,7 +27,7 @@
      </rect>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_2">
+   <widget class="QLineEdit" name="txt_cpfCadastroFunc">
     <property name="geometry">
      <rect>
       <x>110</x>
@@ -37,7 +37,7 @@
      </rect>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_3">
+   <widget class="QLineEdit" name="txt_salarioCadastroFunc">
     <property name="geometry">
      <rect>
       <x>110</x>
@@ -47,7 +47,7 @@
      </rect>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_4">
+   <widget class="QLineEdit" name="txt_funcaoCadastroFunc">
     <property name="geometry">
      <rect>
       <x>110</x>
@@ -114,7 +114,7 @@
      <string>Nome</string>
     </property>
     <property name="alignment">
-     <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
+     <set>AlignVCenter</set>
     </property>
    </widget>
    <widget class="QLabel" name="label_3">
@@ -136,7 +136,7 @@
      <string>CPF</string>
     </property>
     <property name="alignment">
-     <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
+     <set>AlignVCenter</set>
     </property>
    </widget>
    <widget class="QLabel" name="label_4">
@@ -158,7 +158,7 @@
      <string>Salário</string>
     </property>
     <property name="alignment">
-     <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
+     <set>AlignVCenter</set>
     </property>
    </widget>
    <widget class="QLabel" name="label_5">
@@ -180,7 +180,7 @@
      <string>Função</string>
     </property>
     <property name="alignment">
-     <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
+     <set>AlignVCenter</set>
     </property>
    </widget>
    <zorder>bt_confirmarCadastroFun</zorder>
@@ -189,10 +189,10 @@
    <zorder>label_3</zorder>
    <zorder>label_4</zorder>
    <zorder>label_5</zorder>
-   <zorder>lineEdit</zorder>
-   <zorder>lineEdit_2</zorder>
-   <zorder>lineEdit_3</zorder>
-   <zorder>lineEdit_4</zorder>
+   <zorder>txt_nomeCadastroFunc</zorder>
+   <zorder>txt_cpfCadastroFunc</zorder>
+   <zorder>txt_salarioCadastroFunc</zorder>
+   <zorder>txt_funcaoCadastroFunc</zorder>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
