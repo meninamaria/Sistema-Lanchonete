@@ -1,90 +1,92 @@
 import os
 from conexao import banco
+from pathlib import Path
+from PyQt5 import uic, QtWidgets
 
-# FUNCIONARIO---------------------------------------------------------------------------------------------------------
+# conectar com o banco de dados
+cursor = banco.cursor()
+
+
+ui_path1 = Path(__file__).with_name("telaFuncionários.ui")
+telaFunc = uic.loadUi(str(ui_path1))
+ui_path2 = Path(__file__).with_name("telaFuncionários_cadastro.ui")
+telaFunc_cadastro = uic.loadUi(str(ui_path2))
+
 
 def gerenciar_funcionario():
-    print("--- Gerenciamento de Funcionários ---")
-    print("[1] - Cadastrar")
-    print("[2] - Buscar")
-    print("[3] - Atualizar")
-    print("[4] - Excluir")
-    print("[5] - Voltar")
-    opcao = int(input("Digite a opção desejada: "))
+    telaFunc.bt_cadastrarFunc.clicked.connect(cadastrarFunc)
+    telaFunc.bt_buscarFunc.clicked.connect(buscarFunc)
 
-    cursor = banco.cursor()
 
-    # Cadastrar funcionário
-    if opcao == 1:
-        os.system('cls' if os.name == 'nt' else 'clear')
-        salario = float(input("Digite o salário: R$ "))
-        cpf = str(input("Digite o CPF: "))
-        nome = str(input("Digite o nome: "))
-        funcao = str(input("Digite a função: "))
+
+def cadastrarFunc():
+        telaFunc.close()
+        telaFunc_cadastro.show()
+
+        nome = telaFunc_cadastro.txt_nomeCadastroFunc.text()
+        cpf = telaFunc_cadastro.txt_cpfcadastroFunc.text()
+        salario = telaFunc_cadastro.txt_salarioCadastroFunc.text()
+        funcao = telaFunc_cadastro.txt_funcaocadastroFunc.text()
+
+        # falta colocar o botao bt_confirmarCadastro pra adicionar no BD
 
         comando_SQL = "INSERT INTO funcionario (salario, cpf, nome, funcao) VALUES (%s, %s, %s, %s)"
         dados = (float(salario), str(cpf), str(nome), str(funcao))
         cursor.execute(comando_SQL, dados)
         banco.commit()
 
-        os.system('cls' if os.name == 'nt' else 'clear')
-        print("Funcionário cadastrado com sucesso!")
 
-    # Buscar Funcionário
-    elif opcao == 2:
-        cpf = str(input("Informe o CPF: "))
-        comando_SQL = "SELECT * from funcionario WHERE cpf = %s"
-        dado = (str(cpf),)
-        cursor.execute(comando_SQL, dado)
-        busca = cursor.fetchall()
+def buscarFunc():
+    id = telaFunc.txt_buscarFunc.text()
+    comando_SQL = "SELECT * from funcionario WHERE idFunc = %s"
+    dado = (str(id),)
+    cursor.execute(comando_SQL, dado)
+    busca = cursor.fetchall()
 
-        os.system('cls' if os.name == 'nt' else 'clear')
+    telaFunc.tabela_funcionarios.setRowCount(len(busca))
+    telaFunc.tabela_funcionarios.setColumnCount(5)
 
-        print("--- Informações do Funcionário ---")
-        for i in range(0, len(busca)):
-            if busca[i][2] == cpf:
-                print(f"Nome: ", busca[i][3])
-                print(f"Código do Funcionário: ", busca[i][0])
-                print(f"CPF: ", busca[i][2])
-                print(f"Salário: ", busca[i][1])
-                print(f"Função: ", busca[i][4])
-                print("-------------------------------")
+    for i in range(0, len(busca)):
+         for j in range(0, 4):
+            telaFunc.tabela_funcionarios.setItem(i, j, QtWidgets.QTableWidgetItem(str(busca[i][j])))
+            
 
-    # Atualizar dados do funcionário
-    elif opcao == 3:
-        cpf = str(input("Informe o CPF: "))
-        comando_SQL = "SELECT * from funcionario WHERE cpf = %s"
-        dado = (str(cpf),)
-        cursor.execute(comando_SQL, dado)
-        busca = cursor.fetchall()
 
-        os.system('cls' if os.name == 'nt' else 'clear')
+    # # Atualizar dados do funcionário
+    # elif opcao == 3:
+    #     cpf = str(input("Informe o CPF: "))
+    #     comando_SQL = "SELECT * from funcionario WHERE cpf = %s"
+    #     dado = (str(cpf),)
+    #     cursor.execute(comando_SQL, dado)
+    #     busca = cursor.fetchall()
 
-        if busca:
-            print("--- Atualizar Informações ---")
-            salario = float(input("Salário: R$ "))
-            cpf = str(input("CPF: "))
-            nome = str(input("Nome: "))
-            funcao = str(input("Função: "))
-            idFunc = busca[0][0]
+    #     os.system('cls' if os.name == 'nt' else 'clear')
 
-            comando_SQL = "UPDATE funcionario SET salario = %s, cpf = %s, nome = %s, funcao = %s WHERE idFunc = %s"
-            dados = (float(salario), str(cpf), str(nome), str(funcao), int(idFunc))
-            cursor.execute(comando_SQL, dados)
-            banco.commit()
+    #     if busca:
+    #         print("--- Atualizar Informações ---")
+    #         salario = float(input("Salário: R$ "))
+    #         cpf = str(input("CPF: "))
+    #         nome = str(input("Nome: "))
+    #         funcao = str(input("Função: "))
+    #         idFunc = busca[0][0]
 
-    # Excluir funcionário
-    elif opcao == 4:
-        cpf = str(input("Informe o CPF: "))
-        comando_SQL = "DELETE from funcionario WHERE cpf = %s"
-        dado = (str(cpf),)
-        cursor.execute(comando_SQL, dado)
-        banco.commit()
+    #         comando_SQL = "UPDATE funcionario SET salario = %s, cpf = %s, nome = %s, funcao = %s WHERE idFunc = %s"
+    #         dados = (float(salario), str(cpf), str(nome), str(funcao), int(idFunc))
+    #         cursor.execute(comando_SQL, dados)
+    #         banco.commit()
 
-        os.system('cls' if os.name == 'nt' else 'clear')
-        print("Funcionário removido com sucesso!")
+    # # Excluir funcionário
+    # elif opcao == 4:
+    #     cpf = str(input("Informe o CPF: "))
+    #     comando_SQL = "DELETE from funcionario WHERE cpf = %s"
+    #     dado = (str(cpf),)
+    #     cursor.execute(comando_SQL, dado)
+    #     banco.commit()
 
-    # Voltar para o MENU principal
-    elif opcao == 5:
-        os.system('cls' if os.name == 'nt' else 'clear')
-        return "voltar"
+    #     os.system('cls' if os.name == 'nt' else 'clear')
+    #     print("Funcionário removido com sucesso!")
+
+    # # Voltar para o MENU principal
+    # elif opcao == 5:
+    #     os.system('cls' if os.name == 'nt' else 'clear')
+    #     return "voltar"

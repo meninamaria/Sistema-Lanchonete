@@ -4,7 +4,6 @@ from PyQt5 import uic, QtWidgets
 PASTA = Path(__file__).parent
 
 # Lista para manter referência das janelas abertas
-# (sem isso, o Python "esquece" a janela e ela fecha sozinha)
 janelas_abertas = []
 
 
@@ -17,7 +16,7 @@ def abrir_tela(nome_arquivo_ui):
 
 
 def abrir_tela_clientes():
-    abrir_tela("telaPrincipal.ui")  # placeholder até existir telaClientes.ui
+    abrir_tela("telaPrincipal.ui") 
 
 
 def abrir_tela_funcionarios():
