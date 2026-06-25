@@ -18,7 +18,7 @@ carrinho = []                 # lista de dicts: {idProduto, nome, preco, quantid
 banco = mysql.connector.connect(
     host="localhost",
     user="root",
-    passwd="Rachel1307.",
+    passwd="Vieira_maria22",
     database="lanchonete"
 )
 
@@ -706,7 +706,13 @@ def confirmarPagamento():
             (int(numero_idPedido),)
         )
 
-        # 4. Remove o pedido
+        # 4. Remove o pagamento antes de deletar o pedido (respeita FK pagamento -> pedido)
+        cursor.execute(
+            "DELETE FROM pagamento WHERE idPedido = %s",
+            (int(numero_idPedido),)
+        )
+
+        # 5. Remove o pedido
         cursor.execute(
             "DELETE FROM pedido WHERE idPedido = %s",
             (int(numero_idPedido),)
