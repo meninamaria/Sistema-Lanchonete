@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>telaNotaFiscal</class>
+ <widget class="QWidget" name="telaNotaFiscal">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>900</width>
+    <height>700</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Gerar Nota Fiscal</string>
+  </property>
+
+  <layout class="QVBoxLayout" name="verticalLayout_main">
+   <property name="spacing"><number>10</number></property>
+   <property name="margin"><number>15</number></property>
+
+   <!-- TÍTULO -->
+   <item>
+    <widget class="QLabel" name="lbl_titulo">
+     <property name="text"><string>📄 Nota Fiscal</string></property>
+     <property name="alignment"><set>Qt::AlignCenter</set></property>
+     <property name="font">
+      <font><pointsize>16</pointsize><bold>true</bold></font>
+     </property>
+    </widget>
+   </item>
+
+   <!-- BUSCA POR CLIENTE -->
+   <item>
+    <widget class="QGroupBox" name="grp_busca">
+     <property name="title"><string>Buscar Pedidos do Cliente</string></property>
+     <layout class="QHBoxLayout">
+      <item>
+       <widget class="QLabel" name="lbl_idClienteNF">
+        <property name="text"><string>ID do Cliente:</string></property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="txt_idClienteNF">
+        <property name="placeholderText"><string>Digite o ID do cliente</string></property>
+        <property name="maximumWidth"><number>150</number></property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="bt_buscarPedidosNF">
+        <property name="text"><string>🔍 Buscar</string></property>
+        <property name="minimumHeight"><number>32</number></property>
+       </widget>
+      </item>
+      <item>
+       <spacer>
+        <property name="orientation"><enum>Qt::Horizontal</enum></property>
+       </spacer>
+      </item>
+     </layout>
+    </widget>
+   </item>
+
+   <!-- INFORMAÇÕES DO CLIENTE -->
+   <item>
+    <widget class="QFrame" name="frm_infoCliente">
+     <property name="frameShape"><enum>QFrame::StyledPanel</enum></property>
+     <layout class="QHBoxLayout">
+      <item>
+       <widget class="QLabel" name="lbl_nomeClienteNF">
+        <property name="text"><string>Cliente: —</string></property>
+        <property name="font"><font><bold>true</bold></font></property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="lbl_cpfClienteNF">
+        <property name="text"><string>CPF: —  |  Tel: —</string></property>
+       </widget>
+      </item>
+      <item>
+       <spacer>
+        <property name="orientation"><enum>Qt::Horizontal</enum></property>
+       </spacer>
+      </item>
+     </layout>
+    </widget>
+   </item>
+
+   <!-- PAINEL CENTRAL (tabelas lado a lado) -->
+   <item>
+    <layout class="QHBoxLayout" name="layout_tabelas">
+
+     <!-- COLUNA ESQUERDA: lista de pedidos -->
+     <item>
+      <layout class="QVBoxLayout">
+       <item>
+        <widget class="QLabel">
+         <property name="text"><string>Pedidos do Cliente</string></property>
+         <property name="font"><font><bold>true</bold></font></property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QTableWidget" name="tabela_pedidosNF">
+         <property name="selectionBehavior">
+          <enum>QAbstractItemView::SelectRows</enum>
+         </property>
+         <property name="selectionMode">
+          <enum>QAbstractItemView::SingleSelection</enum>
+         </property>
+         <property name="editTriggers">
+          <set>QAbstractItemView::NoEditTriggers</set>
+         </property>
+         <property name="alternatingRowColors"><bool>true</bool></property>
+         <property name="minimumWidth"><number>430</number></property>
+         <column><property name="text"><string>ID Pedido</string></property></column>
+         <column><property name="text"><string>Data</string></property></column>
+         <column><property name="text"><string>Total (R$)</string></property></column>
+         <column><property name="text"><string>Mesa</string></property></column>
+         <column><property name="text"><string>Atendente</string></property></column>
+         <column><property name="text"><string>Status</string></property></column>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout">
+         <item>
+          <widget class="QLabel" name="lbl_totalGeralNF">
+           <property name="text"><string>Total Geral: R$ 0,00</string></property>
+           <property name="font"><font><bold>true</bold></font></property>
+          </widget>
+         </item>
+         <item>
+          <spacer><property name="orientation"><enum>Qt::Horizontal</enum></property></spacer>
+         </item>
+         <item>
+          <widget class="QPushButton" name="bt_exibirItensNF">
+           <property name="text"><string>🧾 Ver Itens</string></property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </item>
+
+     <!-- COLUNA DIREITA: itens do pedido selecionado -->
+     <item>
+      <layout class="QVBoxLayout">
+       <item>
+        <widget class="QLabel">
+         <property name="text"><string>Itens do Pedido Selecionado</string></property>
+         <property name="font"><font><bold>true</bold></font></property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QTableWidget" name="tabela_itensNF">
+         <property name="selectionBehavior">
+          <enum>QAbstractItemView::SelectRows</enum>
+         </property>
+         <property name="editTriggers">
+          <set>QAbstractItemView::NoEditTriggers</set>
+         </property>
+         <property name="alternatingRowColors"><bool>true</bool></property>
+         <property name="minimumWidth"><number>350</number></property>
+         <column><property name="text"><string>Produto</string></property></column>
+         <column><property name="text"><string>Qtd</string></property></column>
+         <column><property name="text"><string>Preço Unit.</string></property></column>
+         <column><property name="text"><string>Subtotal</string></property></column>
+        </widget>
+       </item>
+      </layout>
+     </item>
+
+    </layout>
+   </item>
+
+   <!-- NOTA FISCAL GERADA (texto) -->
+   <item>
+    <widget class="QGroupBox" name="grp_notaGerada">
+     <property name="title"><string>Nota Fiscal Gerada</string></property>
+     <layout class="QVBoxLayout">
+      <item>
+       <widget class="QPlainTextEdit" name="txt_notaFiscalGerada">
+        <property name="readOnly"><bool>true</bool></property>
+        <property name="maximumHeight"><number>180</number></property>
+        <property name="font">
+         <font><family>Courier New</family><pointsize>9</pointsize></font>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+
+   <!-- BOTÕES DE AÇÃO -->
+   <item>
+    <layout class="QHBoxLayout">
+     <item>
+      <widget class="QPushButton" name="bt_voltarNF">
+       <property name="text"><string>◀ Voltar</string></property>
+       <property name="minimumHeight"><number>36</number></property>
+      </widget>
+     </item>
+     <item>
+      <spacer><property name="orientation"><enum>Qt::Horizontal</enum></property></spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="bt_gerarNotaNF">
+       <property name="text"><string>📄 Gerar Nota Fiscal</string></property>
+       <property name="minimumHeight"><number>36</number></property>
+       <property name="font"><font><bold>true</bold></font></property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
