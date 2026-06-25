@@ -18,7 +18,7 @@ carrinho = []                 # lista de dicts: {idProduto, nome, preco, quantid
 banco = mysql.connector.connect(
     host="localhost",
     user="root",
-    passwd="Rachel1307.",
+    passwd="Vieira_maria22",
     database="lanchonete"
 )
 
@@ -706,7 +706,13 @@ def confirmarPagamento():
             (int(numero_idPedido),)
         )
 
-        # 4. Remove o pedido
+        # 4. Remove o pagamento antes de deletar o pedido (respeita FK pagamento -> pedido)
+        cursor.execute(
+            "DELETE FROM pagamento WHERE idPedido = %s",
+            (int(numero_idPedido),)
+        )
+
+        # 5. Remove o pedido
         cursor.execute(
             "DELETE FROM pedido WHERE idPedido = %s",
             (int(numero_idPedido),)
@@ -924,186 +930,6 @@ def atualizarTabelaComidas():
         for j in range(4):
             telaComidas.tabela_cardapio.setItem(i, j, QtWidgets.QTableWidgetItem(str(dados_lidos[i][j])))
 
-# ============================================================
-# NOTA FISCAL
-# ============================================================
-
-def gerenciarNotaFiscal():
-    """Abre a tela de nota fiscal a partir da tela principal."""
-    telaPrincipal.close()
-    telaNotaFiscal.show()
-
-
-def buscarPedidosCliente():
-    """
-    Lê o ID do cliente digitado, faz JOIN entre cliente, pedido, mesa e funcionario
-    e popula a tabela com todos os pedidos daquele cliente.
-    """
-    id_texto = telaNotaFiscal.txt_idClienteNF.text().strip()
-
-    if not id_texto:
-        QtWidgets.QMessageBox.warning(None, "Campo vazio", "Informe o ID do cliente.")
-        return
-
-    try:
-        id_cliente = int(id_texto)
-    except ValueError:
-        QtWidgets.QMessageBox.warning(None, "ID inválido", "O ID do cliente deve ser um número inteiro.")
-        return
-
-    cursor = banco.cursor()
-
-    cursor.execute(
-        "SELECT idCliente, nome, cpf, telefone FROM cliente WHERE idCliente = %s",
-        (id_cliente,)
-    )
-    cliente = cursor.fetchone()
-
-    if not cliente:
-        QtWidgets.QMessageBox.warning(None, "Cliente não encontrado", f"Nenhum cliente com ID {id_cliente}.")
-        telaNotaFiscal.lbl_nomeClienteNF.setText("Cliente: —")
-        telaNotaFiscal.lbl_cpfClienteNF.setText("CPF: —")
-        telaNotaFiscal.tabela_pedidosNF.setRowCount(0)
-        telaNotaFiscal.lbl_totalGeralNF.setText("Total Geral: R$ 0,00")
-        return
-
-    telaNotaFiscal.lbl_nomeClienteNF.setText(f"Cliente: {cliente[1]}")
-    telaNotaFiscal.lbl_cpfClienteNF.setText(f"CPF: {cliente[2]}  |  Tel: {cliente[3]}")
-
-    sql = """
-        SELECT
-            p.idPedido,
-            p.data,
-            p.total,
-            m.numero        AS mesa,
-            f.nome          AS funcionario,
-            CASE WHEN pg.idPagamento IS NOT NULL THEN 'Pago' ELSE 'Em aberto' END AS status_pagamento
-        FROM pedido p
-        INNER JOIN mesa        m  ON m.idMesa   = p.idMesa
-        INNER JOIN funcionario f  ON f.idFunc   = p.idFunc
-        LEFT  JOIN pagamento   pg ON pg.idPedido = p.idPedido
-        WHERE p.idCliente = %s
-        ORDER BY p.data DESC, p.idPedido DESC
-    """
-    cursor.execute(sql, (id_cliente,))
-    pedidos = cursor.fetchall()
-
-    colunas = ["ID Pedido", "Data", "Total (R$)", "Mesa", "Atendente", "Status"]
-    telaNotaFiscal.tabela_pedidosNF.setColumnCount(len(colunas))
-    telaNotaFiscal.tabela_pedidosNF.setHorizontalHeaderLabels(colunas)
-    telaNotaFiscal.tabela_pedidosNF.setRowCount(len(pedidos))
-
-    total_geral = 0.0
-    for i, row in enumerate(pedidos):
-        for j, valor in enumerate(row):
-            telaNotaFiscal.tabela_pedidosNF.setItem(
-                i, j, QtWidgets.QTableWidgetItem(str(valor))
-            )
-        total_geral += float(row[2])
-
-    telaNotaFiscal.lbl_totalGeralNF.setText(f"Total Geral: R$ {total_geral:.2f}")
-
-    if not pedidos:
-        QtWidgets.QMessageBox.information(None, "Sem pedidos", "Este cliente não possui pedidos cadastrados.")
-
-
-def exibirItensPedido():
-    """
-    Ao selecionar uma linha na tabela de pedidos, exibe os itens daquele pedido.
-    """
-    linha = telaNotaFiscal.tabela_pedidosNF.currentRow()
-    if linha < 0:
-        return
-
-    id_pedido = int(telaNotaFiscal.tabela_pedidosNF.item(linha, 0).text())
-
-    cursor = banco.cursor()
-    sql = """
-        SELECT
-            pr.nome     AS produto,
-            ip.quantidade,
-            pr.preco    AS preco_unit,
-            ip.subTotal
-        FROM itempedido ip
-        INNER JOIN produto pr ON pr.idProduto = ip.idProduto
-        WHERE ip.idPedido = %s
-        ORDER BY pr.nome
-    """
-    cursor.execute(sql, (id_pedido,))
-    itens = cursor.fetchall()
-
-    colunas = ["Produto", "Qtd", "Preço Unit. (R$)", "Subtotal (R$)"]
-    telaNotaFiscal.tabela_itensNF.setColumnCount(len(colunas))
-    telaNotaFiscal.tabela_itensNF.setHorizontalHeaderLabels(colunas)
-    telaNotaFiscal.tabela_itensNF.setRowCount(len(itens))
-
-    for i, row in enumerate(itens):
-        for j, valor in enumerate(row):
-            telaNotaFiscal.tabela_itensNF.setItem(
-                i, j, QtWidgets.QTableWidgetItem(str(valor))
-            )
-
-
-def gerarNotaFiscal():
-    """
-    Gera o texto da nota fiscal do pedido selecionado.
-    """
-    linha = telaNotaFiscal.tabela_pedidosNF.currentRow()
-    if linha < 0:
-        QtWidgets.QMessageBox.warning(None, "Nenhum pedido selecionado",
-                                      "Selecione um pedido na tabela antes de gerar a nota.")
-        return
-
-    id_pedido   = telaNotaFiscal.tabela_pedidosNF.item(linha, 0).text()
-    data_pedido = telaNotaFiscal.tabela_pedidosNF.item(linha, 1).text()
-    total       = telaNotaFiscal.tabela_pedidosNF.item(linha, 2).text()
-    mesa        = telaNotaFiscal.tabela_pedidosNF.item(linha, 3).text()
-    atendente   = telaNotaFiscal.tabela_pedidosNF.item(linha, 4).text()
-    status      = telaNotaFiscal.tabela_pedidosNF.item(linha, 5).text()
-
-    nome_cliente = telaNotaFiscal.lbl_nomeClienteNF.text().replace("Cliente: ", "")
-    cpf_cliente  = telaNotaFiscal.lbl_cpfClienteNF.text()
-
-    cursor = banco.cursor()
-    cursor.execute("""
-        SELECT pr.nome, ip.quantidade, pr.preco, ip.subTotal
-        FROM itempedido ip
-        INNER JOIN produto pr ON pr.idProduto = ip.idProduto
-        WHERE ip.idPedido = %s
-        ORDER BY pr.nome
-    """, (int(id_pedido),))
-    itens = cursor.fetchall()
-
-    linha_sep = "=" * 48
-    nota = (
-        f"{linha_sep}\n"
-        f"           LANCHONETE — NOTA FISCAL\n"
-        f"{linha_sep}\n"
-        f"Pedido nº: {id_pedido}          Data: {data_pedido}\n"
-        f"Cliente  : {nome_cliente}\n"
-        f"{cpf_cliente}\n"
-        f"Mesa     : {mesa}     Atendente: {atendente}\n"
-        f"{'-' * 48}\n"
-        f"{'Produto':<22} {'Qtd':>4} {'Unit':>8} {'Subtotal':>10}\n"
-        f"{'-' * 48}\n"
-    )
-
-    for item in itens:
-        nome_prod, qtd, preco_unit, subtotal = item
-        nota += f"{str(nome_prod):<22} {str(qtd):>4} {float(preco_unit):>8.2f} {float(subtotal):>10.2f}\n"
-
-    nota += (
-        f"{'-' * 48}\n"
-        f"{'TOTAL':>42} {float(total):>6.2f}\n"
-        f"{linha_sep}\n"
-        f"Status: {status}\n"
-        f"{linha_sep}\n"
-        f"    Obrigado pela preferência! Volte sempre.\n"
-        f"{linha_sep}\n"
-    )
-
-    telaNotaFiscal.txt_notaFiscalGerada.setPlainText(nota)
-
 
 # faz com que o sistema funcione
 app = QtWidgets.QApplication([])
@@ -1249,19 +1075,6 @@ ui_path24 = Path(__file__).with_name("telaPedidos_pagamento.ui")
 telaPedidos_pagamento = uic.loadUi(str(ui_path24))
 
 telaPedidos_pagamento.bt_confirmarPagamento.clicked.connect(confirmarPagamento)
-
-# Tela nota fiscal
-ui_path_nf = Path(__file__).with_name("telaNotaFiscal.ui")
-telaNotaFiscal = uic.loadUi(str(ui_path_nf))
-
-telaNotaFiscal.bt_buscarPedidosNF.clicked.connect(buscarPedidosCliente)
-telaNotaFiscal.bt_exibirItensNF.clicked.connect(exibirItensPedido)
-telaNotaFiscal.bt_gerarNotaNF.clicked.connect(gerarNotaFiscal)
-telaNotaFiscal.bt_voltarNF.clicked.connect(
-    lambda: [telaNotaFiscal.close(), telaPrincipal.show()]
-)
-
-telaPrincipal.bt_gerNotaFiscal.clicked.connect(gerenciarNotaFiscal)
 
 
 # aqui é pra mostrar a TELA PRINCIPAL DO SISTEMA e executar o SISTEMA
