@@ -156,16 +156,39 @@
     </property>
     <property name="font">
      <font>
-      <family>Microsoft JhengHei UI</family>
+      <family>Microsoft Sans Serif</family>
       <pointsize>24</pointsize>
-      <bold>true</bold>
+      <bold>false</bold>
      </font>
     </property>
     <property name="text">
      <string>Pedidos</string>
     </property>
     <property name="alignment">
-     <set>Qt::AlignmentFlag::AlignCenter</set>
+     <set>AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="txt_totalPedidos">
+    <property name="geometry">
+     <rect>
+      <x>480</x>
+      <y>40</y>
+      <width>121</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Microsoft JhengHei UI</family>
+      <pointsize>16</pointsize>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="alignment">
+     <set>AlignCenter</set>
     </property>
    </widget>
    <zorder>bt_fazerPedido</zorder>
@@ -175,6 +198,7 @@
    <zorder>bt_pagamento</zorder>
    <zorder>label</zorder>
    <zorder>bt_voltar</zorder>
+   <zorder>txt_totalPedidos</zorder>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>

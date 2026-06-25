@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>616</width>
-    <height>498</height>
+    <width>614</width>
+    <height>503</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,7 +20,7 @@
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>0</x>
+      <x>-10</x>
       <y>30</y>
       <width>621</width>
       <height>51</height>
@@ -34,35 +34,35 @@
      </font>
     </property>
     <property name="text">
-     <string>Exibir Cardápio</string>
+     <string>Pagamento</string>
     </property>
     <property name="alignment">
      <set>AlignCenter</set>
     </property>
    </widget>
-   <widget class="QPushButton" name="bt_exibirCardapio">
+   <widget class="QPushButton" name="bt_voltar">
     <property name="geometry">
      <rect>
-      <x>230</x>
-      <y>410</y>
-      <width>151</width>
-      <height>51</height>
+      <x>20</x>
+      <y>20</y>
+      <width>91</width>
+      <height>31</height>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color: rgb(209, 187, 255);</string>
+     <string notr="true">background-color: rgb(190, 211, 255);</string>
     </property>
     <property name="text">
-     <string>Selecionar</string>
+     <string>Voltar</string>
     </property>
    </widget>
-   <widget class="QTableWidget" name="tabela_cardapio">
+   <widget class="QTableWidget" name="tabela_pedidosPagamento">
     <property name="geometry">
      <rect>
-      <x>80</x>
-      <y>90</y>
-      <width>451</width>
-      <height>311</height>
+      <x>20</x>
+      <y>110</y>
+      <width>581</width>
+      <height>271</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -75,19 +75,50 @@
     </column>
     <column>
      <property name="text">
-      <string>Nome</string>
+      <string>Data</string>
      </property>
     </column>
     <column>
      <property name="text">
-      <string>Preço</string>
+      <string>Valor</string>
      </property>
     </column>
     <column>
      <property name="text">
-      <string>ID_Categoria</string>
+      <string>ID_Cli</string>
      </property>
     </column>
+    <column>
+     <property name="text">
+      <string>ID_Func</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>ID_Mesa</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>ID_comida</string>
+     </property>
+    </column>
+   </widget>
+   <widget class="QPushButton" name="bt_confirmarPagamento">
+    <property name="geometry">
+     <rect>
+      <x>230</x>
+      <y>400</y>
+      <width>151</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(209, 187, 255);</string>
+    </property>
+    <property name="text">
+     <string>Confirmar</string>
+    </property>
    </widget>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
