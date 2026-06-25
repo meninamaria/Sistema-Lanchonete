@@ -98,6 +98,7 @@
      <string>Remover</string>
     </property>
    </widget>
+<<<<<<< Updated upstream:sistema/gerenciamento/telaComidas.ui
    <widget class="QPushButton" name="bt_voltar">
     <property name="geometry">
      <rect>
@@ -121,16 +122,31 @@
       <y>30</y>
       <width>621</width>
       <height>51</height>
+=======
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>40</y>
+      <width>611</width>
+      <height>41</height>
+>>>>>>> Stashed changes:sistema/Controle_Gerenciamento/telaComidas.ui
      </rect>
     </property>
     <property name="font">
      <font>
+<<<<<<< Updated upstream:sistema/gerenciamento/telaComidas.ui
       <family>Microsoft JhengHei UI</family>
       <pointsize>24</pointsize>
+=======
+      <pointsize>24</pointsize>
+      <weight>75</weight>
+>>>>>>> Stashed changes:sistema/Controle_Gerenciamento/telaComidas.ui
       <bold>true</bold>
      </font>
     </property>
     <property name="text">
+<<<<<<< Updated upstream:sistema/gerenciamento/telaComidas.ui
      <string>Cardápio</string>
     </property>
     <property name="alignment">
@@ -143,6 +159,27 @@
    <zorder>bt_removerComida</zorder>
    <zorder>label</zorder>
    <zorder>bt_voltar</zorder>
+=======
+     <string>Comidas</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>10</y>
+      <width>93</width>
+      <height>28</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>voltar ao menu</string>
+    </property>
+   </widget>
+>>>>>>> Stashed changes:sistema/Controle_Gerenciamento/telaComidas.ui
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
