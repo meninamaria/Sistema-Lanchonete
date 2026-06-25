@@ -335,9 +335,6 @@ def validarPedido():
             telaPedidos_fazerPedido_validacao.txt_resultadoValidacao_func.setText("Não Cadastrado")
 
 
-# def 
-# listar_comidas()
-
 
 def buscarCli_id(id):
     try:
